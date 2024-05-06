@@ -186,38 +186,36 @@ function M.create_three_floating_windows(show_numbers, relative_numbers, column_
     when_false = padding,
   })
 
-  for i = 1, 3, 1 do
-    local is_parent = i == 1
-    local is_primary = i == 2
-    local is_child = i == 3
-    if is_primary or is_child then
-      x_pos = x_pos + float_widths[i - 1] + 2
-    end
-    local role = u.eval(function()
-      if is_parent then
-        return 'parent'
-      elseif is_primary then
-        return 'primary'
-      end
-      return 'child'
-    end)
-    local win = create_floating_window {
-      width = float_widths[i],
-      height = float_height,
-      y_pos = y_pos,
-      x_pos = x_pos,
-      omit_left_border = is_primary or is_child,
-      omit_right_border = is_parent or is_primary,
-      enable_cursorline = is_parent or is_primary,
-      is_focusable = is_primary,
-      show_numbers = show_numbers and is_primary,
-      relative_numbers = show_numbers and relative_numbers and is_primary,
-      role = role,
-    }
+  local parent_win = create_floating_window {
+    width = float_widths[1],
+    height = float_height,
+    y_pos = y_pos,
+    x_pos = x_pos,
+    omit_right_border = true,
+    enable_cursorline = true,
+    is_focusable = false,
+    show_numbers = show_numbers,
+    relative_numbers = relative_numbers,
+    role = 'parent',
+  }
 
-    table.insert(wins, win)
-  end
+  table.insert(wins, parent_win)
 
+  local child_win = create_floating_window {
+    width = float_widths[2],
+    height = float_height,
+    y_pos = y_pos,
+    x_pos = x_pos + float_widths[1] + 2,
+    omit_left_border = true,
+    omit_right_border = true,
+    enable_cursorline = true,
+    is_focusable = true,
+    show_numbers = show_numbers,
+    relative_numbers = relative_numbers,
+    role = 'child',
+  }
+
+  table.insert(wins,child_win)
   -- Focus the middle window
   vim.api.nvim_set_current_win(wins[2])
 

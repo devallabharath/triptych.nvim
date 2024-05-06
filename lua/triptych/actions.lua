@@ -317,9 +317,9 @@ function Actions.new(State, refresh_view)
   end
 
   M.nav_left = function()
-    local parent_path = State.windows.parent.path
-    if parent_path ~= '/' then
-      view.set_primary_and_parent_window_targets(State, parent_path)
+    local path = State.windows.current.path
+    if path ~= '/' then
+      view.set_primary_and_parent_window_targets(State, vim.fs.dirname(path))
     end
   end
 

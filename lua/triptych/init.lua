@@ -58,17 +58,13 @@ local function toggle_triptych(dir)
   )
 
   State.windows = {
-    parent = {
-      path = '',
-      win = windows[1],
-    },
     current = {
       path = '',
       previous_path = '',
-      win = windows[2],
+      win = windows[1],
     },
     child = {
-      win = windows[3],
+      win = windows[2],
       is_dir = false,
     },
   }
@@ -87,10 +83,9 @@ local function toggle_triptych(dir)
     AutoCmds:destroy_autocommands()
     local wins = State.windows
     float.close_floats {
-      wins.parent.win,
       wins.current.win,
       wins.child.win,
-      windows[4], -- backdrop
+      windows[3], -- backdrop
     }
     vim.api.nvim_set_current_win(State.opening_win)
   end

@@ -253,23 +253,14 @@ function M.set_primary_and_parent_window_targets(State, target_dir)
   local vim = _G.triptych_mock_vim or vim
 
   local focused_win = State.windows.current.win
-  local parent_win = State.windows.parent.win
   local child_win = State.windows.child.win
 
   local focused_title = vim.fs.basename(target_dir)
 
-  local parent_path = vim.fs.dirname(target_dir)
-  local parent_title = vim.fs.basename(parent_path)
 
-  float.win_set_title(parent_win, parent_title, '', 'Directory', get_title_postfix(parent_path))
   float.win_set_title(focused_win, focused_title, '', 'Directory', get_title_postfix(target_dir))
 
   State.windows = {
-    parent = {
-      path = parent_path,
-      contents = nil,
-      win = parent_win,
-    },
     current = {
       path = target_dir,
       previous_path = State.windows.current.path,
@@ -284,7 +275,6 @@ function M.set_primary_and_parent_window_targets(State, target_dir)
     },
   }
 
-  read_path_async(parent_path, State.show_hidden, 'parent')
   read_path_async(target_dir, State.show_hidden, 'primary')
 end
 
@@ -300,9 +290,7 @@ function M.set_parent_or_primary_window_lines(State, path_details, win_type, Dia
   local vim = _G.triptych_mock_vim or vim
 
   local state = u.eval(function()
-    if win_type == 'parent' then
-      return State.windows.parent
-    elseif win_type == 'primary' then
+    if win_type == 'primary' then
       return State.windows.current
     end
     return State.windows.child
@@ -335,10 +323,6 @@ function M.set_parent_or_primary_window_lines(State, path_details, win_type, Dia
     local buf_line_count = vim.api.nvim_buf_line_count(buf)
     vim.api.nvim_win_set_cursor(0, { math.min(line_number, buf_line_count), 0 })
     State.windows.current.contents = contents
-  elseif win_type == 'parent' then
-    local line_number = line_number_of_path(path_details.path, contents.children)
-    vim.api.nvim_win_set_cursor(state.win, { line_number, 0 })
-    State.windows.parent.contents = contents
   end
 end
 
