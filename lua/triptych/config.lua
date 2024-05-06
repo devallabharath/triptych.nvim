@@ -7,11 +7,11 @@ local function default_config()
       -- Everything below is buffer-local, meaning it will only apply to Triptych windows
       show_help = 'g?',
       jump_to_cwd = '.',
-      nav_left = 'h',
-      nav_right = { 'l', '<CR>' },
-      open_hsplit = { '-' },
-      open_vsplit = { '|' },
-      open_tab = { '<C-t>' },
+      nav_left = {'h', '<Left>'},
+      nav_right = { 'l', '<CR>', '<Right>' },
+      open_hsplit = { 'v' },
+      open_vsplit = { 's' },
+      open_tab = { 't' },
       cd = '<leader>cd',
       delete = 'd',
       add = 'a',
@@ -35,7 +35,7 @@ local function default_config()
         directory_icon = '',
         fallback_file_icon = '',
       },
-      column_widths = { 0.25, 0.25, 0.5 },
+      column_widths = { 0.5, 0.5 },
       highlights = {
         file_names = 'NONE',
         directory_names = 'NONE',
@@ -44,7 +44,7 @@ local function default_config()
         enabled = true,
         debounce_ms = 100,
       },
-      backdrop = 60,
+      backdrop = 100,
     },
     git_signs = {
       enabled = true,
@@ -70,18 +70,18 @@ local validate_column_widths = function(user_config)
     local function set_to_default()
       user_config.options.column_widths = default_config().options.column_widths
     end
-    if #col_widths ~= 3 then
+    if #col_widths ~= 2 then
       set_to_default()
       vim.notify(
-        'triptych config.options.column_widths must be a list of 3 decimal numbers. e.g. { 0.25, 0.25, 0.5 }',
+        'triptych config.options.column_widths must be a list of 3 decimal numbers. e.g. { 0.5, 0.5 }',
         vim.log.levels.WARN
       )
     else
-      local total = u.round(col_widths[1] + col_widths[2] + col_widths[3], 2)
+      local total = u.round(col_widths[1] + col_widths[2], 2)
       if total ~= 1 then
         set_to_default()
         vim.notify(
-          'triptych config.options.column_widths must add up to 1 after rounding to 2 decimal places. e.g. { 0.25, 0.25, 0.5 }',
+          'triptych config.options.column_widths must add up to 1 after rounding to 2 decimal places. e.g. { 0.5, 0.5 }',
           vim.log.levels.WARN
         )
       end

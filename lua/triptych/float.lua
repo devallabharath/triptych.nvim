@@ -113,12 +113,15 @@ local function create_floating_window(config)
     col = config.x_pos,
     row = config.y_pos,
     border = 'single',
+    -- border = false,
     style = 'minimal',
     noautocmd = true,
     focusable = config.is_focusable,
     zindex = 101,
   })
   vim.api.nvim_win_set_var(win, 'triptych_role', config.role)
+  vim.api.nvim_win_set_option(win, 'winhl', 'Normal:TriptychNormal,FloatBorder:TriptychBorder')
+  -- vim.api.nvim_win_set_option(win, 'winhl', 'Normal:TriptychNormal')
   vim.api.nvim_win_set_option(win, 'cursorline', config.enable_cursorline)
   vim.api.nvim_win_set_option(win, 'number', config.show_numbers)
   vim.api.nvim_win_set_option(win, 'relativenumber', config.relative_numbers)
@@ -172,11 +175,11 @@ function M.create_three_floating_windows(show_numbers, relative_numbers, column_
     return result
   end)
 
-  local float_height = math.min(screen_height - (padding * 3), max_height)
+  local float_height = math.min(screen_height - (padding * 2), max_height)
 
   local wins = {}
 
-  local x_pos = u.cond(screen_width > (max_total_width + (padding * 2)), {
+  local x_pos = u.cond(screen_width > (max_total_width + padding), {
     when_true = math.floor((screen_width - max_total_width) / 2),
     when_false = padding,
   })
@@ -186,26 +189,27 @@ function M.create_three_floating_windows(show_numbers, relative_numbers, column_
     when_false = padding,
   })
 
-  local parent_win = create_floating_window {
+  local primary_win = create_floating_window {
     width = float_widths[1],
     height = float_height,
     y_pos = y_pos,
     x_pos = x_pos,
+    -- omit_left_border = false,
     omit_right_border = true,
     enable_cursorline = true,
     is_focusable = false,
     show_numbers = show_numbers,
     relative_numbers = relative_numbers,
-    role = 'parent',
+    role = 'primary',
   }
 
-  table.insert(wins, parent_win)
+  table.insert(wins, primary_win)
 
   local child_win = create_floating_window {
     width = float_widths[2],
     height = float_height,
     y_pos = y_pos,
-    x_pos = x_pos + float_widths[1] + 2,
+    x_pos = x_pos + float_widths[1],
     omit_left_border = true,
     omit_right_border = true,
     enable_cursorline = true,
@@ -216,8 +220,8 @@ function M.create_three_floating_windows(show_numbers, relative_numbers, column_
   }
 
   table.insert(wins,child_win)
-  -- Focus the middle window
-  vim.api.nvim_set_current_win(wins[2])
+  -- Focus the first window
+  vim.api.nvim_set_current_win(wins[1])
 
   if backdrop < 100 and vim.o.termguicolors then
     local backdrop_win = create_backdrop(backdrop)

@@ -65,9 +65,6 @@ function M.handle_dir_read(State, path_details, win_type, Diagnostics, Git)
   elseif win_type == 'primary' and State.windows.current.previous_path then
     local line_num = line_number_of_path(State.windows.current.previous_path, path_details.children)
     vim.api.nvim_win_set_cursor(State.windows.current.win, { line_num or 1, 0 })
-  elseif win_type == 'parent' then
-    local line_num = line_number_of_path(State.windows.current.path, path_details.children)
-    vim.api.nvim_win_set_cursor(State.windows.parent.win, { line_num or 1, 0 })
   end
 end
 
