@@ -258,7 +258,7 @@ function M.set_primary_and_parent_window_targets(State, target_dir)
   local focused_title = vim.fs.basename(target_dir)
 
 
-  float.win_set_title(focused_win, focused_title, '', 'Directory', get_title_postfix(target_dir))
+  float.win_set_title(focused_win, focused_title, '', 'TriptychTitle', get_title_postfix(target_dir))
 
   State.windows = {
     current = {
@@ -370,7 +370,7 @@ function M.set_child_window_target(State, path_details)
       State.windows.child.win,
       path_details.display_name,
       '',
-      'Directory',
+      'TriptychTitle',
       get_title_postfix(path_details.path)
     )
     read_path_async(path_details.path, State.show_hidden, 'child')

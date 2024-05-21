@@ -1,5 +1,6 @@
 local float = require 'triptych.float'
 local fs = require 'triptych.fs'
+local config = require 'triptych.config'
 local syntax_highlighting = require 'triptych.syntax_highlighting'
 
 describe('create_three_floating_windows', function()
@@ -56,8 +57,8 @@ describe('create_three_floating_windows', function()
         end,
       },
     }
-
-    float.create_three_floating_windows(true, false, { 0.25, 0.25, 0.5 }, 60)
+    local border = config.options.border
+    float.create_three_floating_windows(border, true, false, { 0.25, 0.25, 0.5 }, 60)
 
     assert.same({
       { false, true },

@@ -51,6 +51,7 @@ local function toggle_triptych(dir)
   end)
 
   local windows = float.create_three_floating_windows(
+    config.options.border,
     config.options.line_numbers.enabled,
     config.options.line_numbers.relative,
     config.options.column_widths,

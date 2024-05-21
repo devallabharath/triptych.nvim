@@ -24,6 +24,7 @@ local function default_config()
     },
     extension_mappings = {},
     options = {
+      border = { " ", "", "", "▌", "▌", "", "", "▌" },
       dirs_first = true,
       show_hidden = false,
       line_numbers = {

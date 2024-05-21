@@ -68,17 +68,17 @@ function M.win_set_title(win, title, icon, highlight, postfix)
     local maybe_icon = ''
     if vim.g.triptych_config.options.file_icons.enabled and icon then
       if highlight then
-        maybe_icon = u.with_highlight_group(highlight, icon) .. ' '
+        maybe_icon = u.with_highlight_group("TriptychTitle", icon) .. ' '
       else
         maybe_icon = icon .. ' '
       end
     end
     local safe_title = string.gsub(title, '%%', '')
     if postfix and postfix ~= '' then
-      safe_title = safe_title .. ' ' .. u.with_highlight_group('Comment', postfix)
+      safe_title = safe_title .. ' ' .. u.with_highlight_group('TriptychTitleAlt', postfix)
     end
-    local title_with_hi = u.with_highlight_group('WinBar', safe_title)
-    vim.wo.winbar = u.with_highlight_group('WinBar', '%=' .. maybe_icon .. title_with_hi .. '%=')
+    local title_with_hi = u.with_highlight_group('TriptychTitle', safe_title)
+    vim.wo.winbar = u.with_highlight_group('TriptychTitle', '%=' .. maybe_icon .. title_with_hi .. '%=')
   end)
 end
 
@@ -112,16 +112,18 @@ local function create_floating_window(config)
     relative = 'editor',
     col = config.x_pos,
     row = config.y_pos,
-    border = 'single',
-    -- border = false,
+    border = config.border,
     style = 'minimal',
     noautocmd = true,
     focusable = config.is_focusable,
     zindex = 101,
   })
+  local curr_hl = vim.api.nvim_get_hl_by_name('Cursor', true)
+  curr_hl.blend = 100
+  vim.opt.guicursor:append('a:Cursor/lCursor')
+  vim.api.nvim_set_hl(0, 'Cursor', curr_hl)
   vim.api.nvim_win_set_var(win, 'triptych_role', config.role)
-  -- vim.api.nvim_win_set_option(win, 'winhl', 'Normal:TriptychNormal,FloatBorder:TriptychBorder')
-  -- vim.api.nvim_win_set_option(win, 'winhl', 'Normal:TriptychNormal')
+  vim.api.nvim_win_set_option(win, 'winhl', 'Normal:TriptychNormal,FloatBorder:TriptychBorder')
   vim.api.nvim_win_set_option(win, 'cursorline', config.enable_cursorline)
   vim.api.nvim_win_set_option(win, 'number', config.show_numbers)
   vim.api.nvim_win_set_option(win, 'relativenumber', config.relative_numbers)
@@ -161,7 +163,7 @@ end
 ---@param column_widths number[]
 ---@param backdrop number
 ---@return number[] 4 window ids (parent, primary, child, backdrop)
-function M.create_three_floating_windows(show_numbers, relative_numbers, column_widths, backdrop)
+function M.create_three_floating_windows(border, show_numbers, relative_numbers, column_widths, backdrop)
   local vim = _G.triptych_mock_vim or vim
   local max_total_width = 220 -- width of all 3 windows combined
   local max_height = 45
@@ -192,10 +194,11 @@ function M.create_three_floating_windows(show_numbers, relative_numbers, column_
   local primary_win = create_floating_window {
     width = float_widths[1],
     height = float_height,
+    border = border,
     y_pos = y_pos,
     x_pos = x_pos,
-    -- omit_left_border = false,
-    omit_right_border = true,
+    omit_left_border = false,
+    omit_right_border = false,
     enable_cursorline = true,
     is_focusable = false,
     show_numbers = show_numbers,
@@ -210,8 +213,8 @@ function M.create_three_floating_windows(show_numbers, relative_numbers, column_
     height = float_height,
     y_pos = y_pos,
     x_pos = x_pos + float_widths[1],
-    omit_left_border = true,
-    omit_right_border = true,
+    omit_left_border = false,
+    omit_right_border = false,
     enable_cursorline = true,
     is_focusable = true,
     show_numbers = show_numbers,
@@ -242,6 +245,10 @@ function M.close_floats(wins)
     -- But we need to wrap this in pcall to suppress errors when this isn't the case
     pcall(vim.api.nvim_win_close, win, { force = true })
   end
+  local hl = vim.api.nvim_get_hl_by_name('Cursor', true)
+  hl.blend = 0
+  vim.api.nvim_set_hl(0, 'Cursor', hl)
+  vim.opt.guicursor:remove('a:Cursor/lCursor')
 end
 
 return M

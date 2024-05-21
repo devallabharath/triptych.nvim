@@ -50,6 +50,7 @@
 ---@field fn fun(contents?: PathDetails): nil
 
 ---@class TriptychConfigOptions
+---@field border any
 ---@field dirs_first boolean
 ---@field show_hidden boolean
 ---@field line_numbers TriptychConfigLineNumbers
@@ -118,7 +119,6 @@
 ---@field children? PathDetails
 
 ---@class ViewState
----@field parent ViewStateWindow
 ---@field current ViewStateCurrentWindow
 ---@field child ViewStateChildWindow
 
@@ -134,9 +134,10 @@
 ---@class ViewStateChildWindow: ViewStateWindow
 ---@field is_dir boolean
 
----@alias WinType 'parent' | 'primary' | 'child'
+---@alias WinType 'primary' | 'child'
 
 ---@class FloatingWindowConfig
+---@field border any
 ---@field width number
 ---@field height number
 ---@field x_pos number
