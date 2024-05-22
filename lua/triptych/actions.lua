@@ -21,19 +21,17 @@ function Actions.new(State, refresh_view)
     float.win_set_lines(win, triptych_help.help_lines())
   end
 
-  ---@return nil
-  M.delete = function()
-    local target = view.get_target_under_cursor(State)
-    if target then
-      local prompt = 'Are you sure you want to delete "' .. target.display_name .. '"?'
-      vim.ui.select({ 'Yes', 'No' }, { prompt = prompt }, function(response)
-        if u.is_defined(response) and response == 'Yes' then
-          vim.fn.delete(target.path, 'rf')
-          refresh_view()
-        end
-      end)
+ ---@return nil
+ M.delete = function()
+  local target = view.get_target_under_cursor(State)
+  if target then
+    local ans = vim.fn.confirm("Are you sure you want to delete this file?", "&Yes\n&No", 1)
+    if ans == 1 then
+      vim.fn.delete(target.path, 'rf')
+      refresh_view()
     end
   end
+end
 
   ---@param _targets PathDetails[]
   ---@param skip_confirm boolean
