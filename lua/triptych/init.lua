@@ -30,8 +30,8 @@ local function toggle_triptych(dir)
 
   local config = vim.g.triptych_config
   local State = state.new(config, vim.api.nvim_get_current_win())
-  local Git = config.git_signs.enabled and git.Git.new() or nil
-  local Diagnostics = config.diagnostic_signs.enabled and diagnostics.new() or nil
+  local Git = config.options.git_signs.enabled and git.Git.new() or nil
+  local Diagnostics = config.options.diagnostic_signs.enabled and diagnostics.new() or nil
 
   local opening_dir = u.eval(function()
     if dir then

@@ -4,7 +4,6 @@ local u = require 'triptych.utils'
 local function default_config()
   return {
     mappings = {
-      -- Everything below is buffer-local, meaning it will only apply to Triptych windows
       show_help = 'g?',
       jump_to_cwd = '.',
       nav_left = {'h', '<Left>'},
@@ -12,7 +11,7 @@ local function default_config()
       open_hsplit = { 'v' },
       open_vsplit = { 's' },
       open_tab = { 't' },
-      cd = '<leader>cd',
+      cd = '<leader>g',
       delete = 'd',
       add = 'a',
       copy = 'c',
@@ -24,7 +23,6 @@ local function default_config()
     },
     extension_mappings = {},
     options = {
-      border = { " ", "", "", "▌", "▌", "", "", "▌" },
       dirs_first = true,
       show_hidden = false,
       line_numbers = {
@@ -35,6 +33,18 @@ local function default_config()
         enabled = true,
         directory_icon = '',
         fallback_file_icon = '',
+      },
+      git_signs = {
+        enabled = true,
+        signs = {
+          add = '+',
+          modify = '~',
+          rename = 'r',
+          untracked = '?',
+        },
+      },
+      diagnostic_signs = {
+        enabled = true,
       },
       max_width = 200,
       max_height = 30,
@@ -48,18 +58,7 @@ local function default_config()
         debounce_ms = 100,
       },
       backdrop = 100,
-    },
-    git_signs = {
-      enabled = true,
-      signs = {
-        add = '+',
-        modify = '~',
-        rename = 'r',
-        untracked = '?',
-      },
-    },
-    diagnostic_signs = {
-      enabled = true,
+      border = { " ", "", "", "▌", "▌", "", "", "▌" },
     },
   }
 end

@@ -2,8 +2,6 @@
 ---@field mappings TriptychConfigMappings
 ---@field extension_mappings { [string]: ExtensionMapping }
 ---@field options TriptychConfigOptions
----@field git_signs TriptychConfigGitSigns
----@field diagnostic_signs TriptychConfigDiagnostic
 
 ---@class TriptychState
 ---@field new fun(config: TriptychConfig, opening_win: integer): TriptychState
@@ -55,6 +53,8 @@
 ---@field show_hidden boolean
 ---@field line_numbers TriptychConfigLineNumbers
 ---@field file_icons TriptychConfigFileIcons
+---@field git_signs TriptychConfigGitSigns
+---@field diagnostic_signs TriptychConfigDiagnostic
 ---@field column_widths number[]
 ---@field max_width number
 ---@field max_height number
