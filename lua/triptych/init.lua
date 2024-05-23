@@ -54,6 +54,8 @@ local function toggle_triptych(dir)
     config.options.border,
     config.options.line_numbers.enabled,
     config.options.line_numbers.relative,
+    config.options.max_width,
+    config.options.max_height,
     config.options.column_widths,
     config.options.backdrop
   )

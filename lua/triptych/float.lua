@@ -163,31 +163,29 @@ end
 ---@param column_widths number[]
 ---@param backdrop number
 ---@return number[] 4 window ids (parent, primary, child, backdrop)
-function M.create_three_floating_windows(border, show_numbers, relative_numbers, column_widths, backdrop)
+function M.create_three_floating_windows(border, show_numbers, relative_numbers, max_w, max_h, column_widths, backdrop)
   local vim = _G.triptych_mock_vim or vim
-  local max_total_width = 220 -- width of all 3 windows combined
-  local max_height = 45
   local screen_height = vim.o.lines
   local screen_width = vim.o.columns
   local padding = 4
 
   local float_widths = u.map(column_widths, function(percentage)
-    local max = math.floor(max_total_width * percentage)
+    local max = math.floor(max_w * percentage)
     local result = math.min(math.floor((screen_width * percentage)) - padding, max)
     return result
   end)
 
-  local float_height = math.min(screen_height - (padding * 2), max_height)
+  local float_height = math.min(screen_height - (padding * 2), max_h)
 
   local wins = {}
 
-  local x_pos = u.cond(screen_width > (max_total_width + padding), {
-    when_true = math.floor((screen_width - max_total_width) / 2),
+  local x_pos = u.cond(screen_width > (max_w + padding), {
+    when_true = math.floor((screen_width - max_w) / 2),
     when_false = padding,
   })
 
-  local y_pos = u.cond(screen_height > (max_height + (padding * 2)), {
-    when_true = math.floor((screen_height - max_height) / 2),
+  local y_pos = u.cond(screen_height > (max_h + (padding * 2)), {
+    when_true = math.floor((screen_height - max_h) / 2),
     when_false = padding,
   })
 

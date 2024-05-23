@@ -36,6 +36,8 @@ local function default_config()
         directory_icon = '',
         fallback_file_icon = '',
       },
+      max_width = 200,
+      max_height = 30,
       column_widths = { 0.5, 0.5 },
       highlights = {
         file_names = 'NONE',
