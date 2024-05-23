@@ -56,6 +56,8 @@
 ---@field line_numbers TriptychConfigLineNumbers
 ---@field file_icons TriptychConfigFileIcons
 ---@field column_widths number[]
+---@field max_width number
+---@field max_height number
 ---@field highlights TriptychConfigHighlights
 ---@field syntax_highlighting TriptychConfigSyntaxHighlighting
 ---@field backdrop number
