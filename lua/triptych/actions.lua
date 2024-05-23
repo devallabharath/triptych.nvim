@@ -25,8 +25,8 @@ function Actions.new(State, refresh_view)
  M.delete = function()
   local target = view.get_target_under_cursor(State)
   if target then
-    local ans = vim.fn.confirm("Are you sure you want to delete this file?", "&Yes\n&No", 1)
-    if ans == 1 then
+    local ans = vim.fn.confirm("Are you sure you want to delete this file?", "&No\n&Yes", 1)
+    if ans == 2 then
       vim.fn.delete(target.path, 'rf')
       refresh_view()
     end
